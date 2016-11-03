@@ -14,10 +14,7 @@
         $result = "Rental record for {0}`r`n" -f $this.Name
         foreach ($rental in $this.Rentals) {
             # calc frequent renter points
-            $frequent_renter_points += 1
-            if ($rental.Movie.PriceCode = 1) {
-                $frequent_renter_points += 1
-            }
+            $frequent_renter_points += $rental.frequentRenterPoints
             $total_amount += $rental.charge
             $result += "`t{0}`t{1}`r`n" -f $rental.Movie.Title, $rental.charge
         }

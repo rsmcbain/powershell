@@ -34,6 +34,13 @@
         }
         $this_amount
     }
+    $r | Add-Member -MemberType ScriptMethod -Name frequentRenterPoints -Value {
+        $frequent_renter_points = 1
+        if ($rental.Movie.PriceCode = 1) {
+            $frequent_renter_points += 1
+        }
+        $frequent_renter_points
+    }
     $r
 }
 
