@@ -11,6 +11,29 @@
         DaysRented = $DaysRented
     }
     $r.PSObject.TypeNames.Insert(0,'Rental')
+    $r | Add-Member -MemberType ScriptMethod -Name charge -Value {
+        $this_amount = 0
+        # calc amounts for each line
+        switch ($this.Movie.PriceCode) {
+            0 {
+                $this_amount += 2
+                if ($this.DaysRented > 2) {
+                    $this_amount += ($this.DaysRented -2 ) *1.5
+                }
+            }
+            1 {
+                $this_amount += $this.DaysRented * 3
+            }
+            2 {
+                $this_amount += 1.5
+                if ($this.DaysRented > 3) {
+                    $this_amount += ($this.DaysRented -3 ) *1.5
+                }
+            }
+            default { 0 }
+        }
+        $this_amount
+    }
     $r
 }
 

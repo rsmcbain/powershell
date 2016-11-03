@@ -31,27 +31,7 @@
             [ValidateScript({$_.PSObject.TypeNames[0] -eq 'Rental' })]
             $rental
         )
-        $this_amount = 0
-        # calc amounts for each line
-        switch ($rental.Movie.PriceCode) {
-            0 { 
-                $this_amount += 2 
-                if ($rental.DaysRented > 2) {
-                    $this_amount += ($rental.DaysRented -2 ) *1.5
-                }
-            }
-            1 { 
-                $this_amount += $rental.DaysRented * 3
-            }
-            2 {
-                $this_amount += 1.5
-                if ($rental.DaysRented > 3) {
-                    $this_amount += ($rental.DaysRented -3 ) *1.5
-                }
-            }
-            default { 0 }
-        }
-        $this_amount
+        $rental.charge
     }
     $c
 }
