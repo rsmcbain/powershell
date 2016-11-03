@@ -18,20 +18,12 @@
             if ($rental.Movie.PriceCode = 1) {
                 $frequent_renter_points += 1
             }
-            $total_amount += $this.amountFor($rental)
+            $total_amount += $rental.charge
             $result += "`t{0}`t{1}`r`n" -f $rental.Movie.Title, $this_amount
         }
     $result += "Amount owed is {0}`n`r" -f $total_amount
     $result += "You have earned {0} frequent renter points`n`r" -f $frequent_renter_points
     "$result"
-    }
-    $c | Add-Member -MemberType ScriptMethod -Name amountFor -Value {
-        params (
-            [Parameter(Mandatory=$true)]
-            [ValidateScript({$_.PSObject.TypeNames[0] -eq 'Rental' })]
-            $rental
-        )
-        $rental.charge
     }
     $c
 }
