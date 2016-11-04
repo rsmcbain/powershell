@@ -35,11 +35,8 @@
         $this_amount
     }
     $r | Add-Member -MemberType ScriptMethod -Name frequentRenterPoints -Value {
-        $frequent_renter_points = 1
-        if ($rental.Movie.PriceCode = 1) {
-            $frequent_renter_points += 1
-        }
-        $frequent_renter_points
+      $result = if (($this.Movie.PriceCode = 1) -and ($this.days_rented > 1)) {2} else {1}
+      $result
     }
     $r
 }
