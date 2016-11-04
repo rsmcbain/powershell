@@ -17,7 +17,7 @@
         switch ($this.Movie.PriceCode) {
             0 {
                 $this_amount += 2
-                if ($this.DaysRented > 2) {
+                if ($this.DaysRented -gt 2) {
                     $this_amount += ($this.DaysRented -2 ) *1.5
                 }
             }
@@ -26,7 +26,7 @@
             }
             2 {
                 $this_amount += 1.5
-                if ($this.DaysRented > 3) {
+                if ($this.DaysRented -gt 3) {
                     $this_amount += ($this.DaysRented -3 ) *1.5
                 }
             }
@@ -35,7 +35,7 @@
         $this_amount
     }
     $r | Add-Member -MemberType ScriptMethod -Name frequentRenterPoints -Value {
-      $result = if (($this.Movie.PriceCode = 1) -and ($this.days_rented > 1)) {2} else {1}
+      $result = if (($this.Movie.PriceCode = 1) -and ($this.DaysRented -gt 1)) {2} else {1}
       $result
     }
     $r

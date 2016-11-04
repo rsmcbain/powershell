@@ -12,10 +12,14 @@ Describe "New-Customer" {
     It "Simple Creation - Empty Rentals" {
         $Customer.Rentals.Count | Should Be 0
     }
-    It "Customer Statment has no rentals" {
+    It "Customer Statement has no rentals" {
         $calc = $Customer.calcStatement()
         $calc | Should Match 'Amount owed is 0'
     }
+#    It "Customer HtmlStatement has no rentals" {
+#        $calc = $Customer.calcHtmlStatement()
+#        $calc | Should Match 'Amount owed is <em>0</em>'
+#    }
 }
 Describe "New-Customer Changes" {
     beforeEach {
@@ -31,6 +35,18 @@ Describe "New-Customer Changes" {
         $Cust = New-Customer -Name Bud
         $Cust.Rentals.Add($Rental)
         $Cust.Rentals[0] | Should Be $Rental
+    }
+    It "Customer Statement has no rentals" {
+        $Cust = New-Customer -Name Bud
+        $Cust.Rentals.Add($Rental)
+        $calc = $Cust.calcStatement()
+        $calc | Should Match 'Amount owed is 3.5'
+    }
+    It "Customer HtmlStatement has no rentals" {
+        $Cust = New-Customer -Name Bud
+        $Cust.Rentals.Add($Rental)
+        $calc = $Cust.calcHtmlStatement()
+        $calc | Should Match 'Amount owed is <em>3.5</em>'
     }
     It "Customer with no rentals and adds 2 yields Rentals length 2" {
         $Cust = New-Customer -Name Bud
