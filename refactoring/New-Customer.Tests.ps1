@@ -16,14 +16,15 @@ Describe "New-Customer" {
         $calc = $Customer.calcStatement()
         $calc | Should Match 'Amount owed is 0'
     }
-#    It "Customer HtmlStatement has no rentals" {
-#        $calc = $Customer.calcHtmlStatement()
-#        $calc | Should Match 'Amount owed is <em>0</em>'
-#    }
+    It "Customer HtmlStatement has no rentals" {
+        $calc = $Customer.calcHtmlStatement()
+        $calc | Should Match 'Amount owed is <em>0</em>'
+    }
 }
 Describe "New-Customer Changes" {
-    beforeEach {
-      $Movie = New-Movie -Title "Vertigo"
+    beforeEach { 
+      $Price = New-RegularPrice
+      $Movie = New-Movie -Title "Vertigo -Price $Price"
       $Rental = New-Rental -Movie $Movie -DaysRented 3
     }
     It "Customer with no rentals and adds 1 yields Rentals length 1" {

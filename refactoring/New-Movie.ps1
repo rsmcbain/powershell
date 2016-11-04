@@ -3,13 +3,27 @@ function New-Movie {
         [Parameter(Mandatory=$true)]
         [string]$Title,
         [Parameter(Mandatory=$false)]
-        [ValidateSet(0,1,2)]
-        [int]$PriceCode = 0
+        [ValidateScript({$_.PSObject.TypeNames[0] -eq 'Price' })]
+        $Price
     )
     $m = New-Object psobject -property @{
         Title = $Title
-        PriceCode = $PriceCode
+        Price = $Price
     }
     $m.PSObject.TypeNames.Insert(0,'Movie')
+    $m | Add-Member -MemberType ScriptMethod -Name charge -Value {
+        param (
+            [Parameter(Mandatory=$true)]
+            [int]$daysRented
+        )
+        $Price.charge($daysRented)
+    }
+    $m | Add-Member -MemberType ScriptMethod -Name frequentRenterPoints -Value {
+        param (
+            [Parameter(Mandatory=$true)]
+            [int]$daysRented
+        )
+      $Price.renterPoints($daysRented)
+    }
     $m
 }

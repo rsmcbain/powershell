@@ -12,31 +12,10 @@
     }
     $r.PSObject.TypeNames.Insert(0,'Rental')
     $r | Add-Member -MemberType ScriptMethod -Name charge -Value {
-        $this_amount = 0
-        # calc amounts for each line
-        switch ($this.Movie.PriceCode) {
-            0 {
-                $this_amount += 2
-                if ($this.DaysRented -gt 2) {
-                    $this_amount += ($this.DaysRented -2 ) *1.5
-                }
-            }
-            1 {
-                $this_amount += $this.DaysRented * 3
-            }
-            2 {
-                $this_amount += 1.5
-                if ($this.DaysRented -gt 3) {
-                    $this_amount += ($this.DaysRented -3 ) *1.5
-                }
-            }
-            default { 0 }
-        }
-        $this_amount
+      $Movie.charge($this.DaysRented)
     }
     $r | Add-Member -MemberType ScriptMethod -Name frequentRenterPoints -Value {
-      $result = if (($this.Movie.PriceCode = 1) -and ($this.DaysRented -gt 1)) {2} else {1}
-      $result
+      $Movie.frequentRenterPoints()
     }
     $r
 }

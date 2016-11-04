@@ -4,28 +4,34 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 
 Describe "New Movie Basic - Star Wars, 0" {
     BeforeEach {
-        $Movie  = New-Movie -Title "Star Wars" -PriceCode 0
+        $Price  = New-RegularPrice 
+        $Movie  = New-Movie -Title "Star Wars" -Price $Price
     }
     It "Title is Star Wars" {
         $Movie.Title | Should Be "Star Wars"
     }
-    It "PriceCode is 0 (Regular)" {
-        $Movie.PriceCode | Should Be 0
-    }
 }
-Describe "New Movie Invalid PriceCode - Star Wars, 4" {
+Describe "New Movie Invalid PriceCode - Star Wars, RegularPrice" {
     It "Validates Price Code" {
-       {$Movie  = New-Movie -Title "Star Wars" -PriceCode 4}  | Should Throw "Cannot validate argument on parameter 'PriceCode'"
+        $Price = $null
+       {$Movie  = New-Movie -Title "Star Wars" -Price $Price}  | Should Throw "Cannot validate argument on parameter 'Price'"
     }
 }
-Describe "New Movie Invalid - null, 0" {
+Describe "New Movie Invalid - null title" {
     It "Validates Missing Title" {
-       {$Movie  = New-Movie -PriceCode 4}  | Should Throw "Cannot validate argument on parameter 'PriceCode'"
+        $Price  = New-RegularPrice 
+       {$Movie  = New-Movie -Price $Price -Title $null}  | Should Throw "Cannot bind argument to parameter 'Title' because it is an empty string"
     }
 }
 Describe "New Movie Defaults PriceCode=0 - Star Wars, null" {
-    It "Missing Price Code defaults to 0" {
-       $Movie  = New-Movie -Title "Star Wars"
-       $Movie.PriceCode  | Should Be 0
+    It "Regular Price charge for 1 day is 2 " {
+       $Price  = New-RegularPrice
+       $Movie  = New-Movie -Title "Star Wars" -Price $Price
+       $Movie.Price.charge(1)  | Should Be 2
+    }
+    It "Regular Price charge for 3 days is 3 " {
+       $Price  = New-RegularPrice
+       $Movie  = New-Movie -Title "Star Wars" -Price $Price
+       $Movie.Price.charge(1)  | Should Be 2
     }
 }

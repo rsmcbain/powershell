@@ -4,7 +4,8 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path).Replace(".Tests.", ".")
 
 Describe "New-Rental Basic creation" {
     beforeEach {
-      $Movie = New-Movie -Title "Being There" -PriceCode 0
+      $Price = New-RegularPrice
+      $Movie = New-Movie -Title "Being There" -Price $Price
       $Rental = New-Rental -Movie $Movie -DaysRented 3
     }
     It "Rental Movie matches Supplied Movie" {
